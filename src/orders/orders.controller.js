@@ -77,11 +77,11 @@ function list(req, res) {
   res.json({ data: orders });
 }
 
-function read(req, res) {
+function readOrder(req, res) {
   res.json({ data: res.locals.order });
 }
 
-function create(req, res) {
+function createOrder(req, res) {
   const { data: { deliverTo, mobileNumber, status, dishes } = {} } = req.body;
   const newOrder = {
     id: nextId(),
@@ -94,7 +94,7 @@ function create(req, res) {
   res.status(201).json({ data: newOrder });
 }
 
-function update(req, res) {
+function updateOrder(req, res) {
   const order = res.locals.order;
   const { data: { deliverTo, mobileNumber, status, dishes } = {} } = req.body;
 
@@ -106,7 +106,7 @@ function update(req, res) {
   res.json({ data: order });
 }
 
-function destroy(req, res) {
+function destroyOrder(req, res) {
   const { orderId } = req.params;
   const index = orders.findIndex((order) => order.id === orderId);
   if (orders[index].status !== "pending") {
@@ -120,8 +120,8 @@ function destroy(req, res) {
 
 module.exports = {
   list,
-  read: [orderExists, read],
-  create: [validateOrder, create],
-  update: [orderExists, validateOrder, validateOrderStatus, validateOrderId, update],
-  delete: [orderExists, destroy],
+  read: [orderExists, readOrder],
+  create: [validateOrder, createOrder],
+  update: [orderExists, validateOrder, validateOrderStatus, validateOrderId, updateOrder],
+  delete: [orderExists, destroyOrder],
 };
