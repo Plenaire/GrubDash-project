@@ -45,11 +45,11 @@ function list(req, res) {
   res.json({ data: dishes });
 }
 
-function read(req, res) {
+function readDish(req, res) {
   res.json({ data: res.locals.dish });
 }
 
-function create(req, res) {
+function createDish(req, res) {
   const { data: { name, description, price, image_url } = {} } = req.body;
   const newDish = {
     id: nextId(),
@@ -62,7 +62,7 @@ function create(req, res) {
   res.status(201).json({ data: newDish });
 }
 
-function update(req, res, next) {
+function updateDish(req, res, next) {
   const dish = res.locals.dish;
   const { data: { id, name, description, price, image_url } = {} } = req.body;
 
@@ -83,7 +83,7 @@ function update(req, res, next) {
 
 module.exports = {
   list,
-  read: [dishExists, read],
-  create: [validateDish, create],
-  update: [dishExists, validateDish, update],
+  read: [dishExists, readDish],
+  create: [validateDish, createDish],
+  update: [dishExists, validateDish, updateDish],
 };
